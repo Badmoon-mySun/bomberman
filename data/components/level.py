@@ -19,7 +19,7 @@ class Level:
     def __init__(self, screen):
         self.screen = screen
         self.entities = sprite.Group()
-        self.platforms = []
+        self.blocks = []
 
         self.__draw_level()
 
@@ -29,11 +29,14 @@ class Level:
             for blk in line:
                 if blk != " ":
                     if blk == "#":
-                        pf = MetalPlate(x, y)
+                        obstacle = MetalPlate(x, y)
                     else:
-                        pf = Box(x, y)
-                    self.entities.add(pf)
-                    self.platforms.append(pf)
+                        obstacle = Box(x, y)
+                    self.entities.add(obstacle)
+                    self.blocks.append(obstacle)
+                else:
+                    floor = Floor(x, y)
+                    self.entities.add(floor)
 
                 x += BLOCK_SIZE
             y += BLOCK_SIZE
