@@ -23,7 +23,7 @@ class Block(sprite.Sprite):
 class MetalPlate(Block, Obstacle, ABC):
     def __init__(self, x, y):
         Block.__init__(self, x, y)
-        self.image = image.load("%s\\metal.jpg" % sprites_dir)
+        self.image = image.load("%s\\metal.png" % sprites_dir)
 
     def is_destructible(self):
         return False
