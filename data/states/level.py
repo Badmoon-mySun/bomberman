@@ -1,4 +1,4 @@
-from .blocks import *
+from data.components.blocks import *
 
 level = ["###############",
          "#    ------   #",
@@ -19,7 +19,7 @@ class Level:
     def __init__(self, screen):
         self.screen = screen
         self.entities = sprite.Group()
-        self.blocks = []
+        self.obstacles = []
 
         self.__draw_level()
 
@@ -33,7 +33,7 @@ class Level:
                     else:
                         obstacle = Box(x, y)
                     self.entities.add(obstacle)
-                    self.blocks.append(obstacle)
+                    self.obstacles.append(obstacle)
                 else:
                     floor = Floor(x, y)
                     self.entities.add(floor)
