@@ -23,7 +23,7 @@ class Block(sprite.Sprite):
 class MetalPlate(Block, Obstacle, ABC):
     def __init__(self, x, y):
         Block.__init__(self, x, y)
-        self.image = image.load("%s\\metal.png" % sprites_dir)
+        self.image = image.load("%s\\metal40.png" % sprites_dir)
 
     def is_destructible(self):
         return False
@@ -32,13 +32,13 @@ class MetalPlate(Block, Obstacle, ABC):
 class Box(Block, Obstacle, ABC):
     def __init__(self, x, y):
         Block.__init__(self, x, y)
-        self.image = image.load("%s\\box.png" % sprites_dir)
+        self.image = image.load("%s\\box40.png" % sprites_dir)
 
     def is_destructible(self):
         return True
 
 
-class Floor(Block, ABC):
-    def __init__(self, x, y):
-        Block.__init__(self, x, y)
-        self.image = image.load("%s\\floor.png" % sprites_dir)
+class GrassFloor:
+    def __init__(self):
+        self.image = Surface((BLOCK_SIZE, BLOCK_SIZE))
+        self.image = image.load("%s\\floor40.png" % sprites_dir)
