@@ -2,9 +2,7 @@ from abc import abstractmethod, ABC
 
 from data.constants import *
 from pygame import *
-import os
-
-sprites_dir = os.path.dirname(__file__).replace("data\\components", "resources\\sprites")
+from data.sprites import *
 
 
 class Obstacle:
@@ -23,7 +21,7 @@ class Block(sprite.Sprite):
 class MetalPlate(Block, Obstacle, ABC):
     def __init__(self, x, y):
         Block.__init__(self, x, y)
-        self.image = image.load("%s\\metal40.png" % sprites_dir)
+        self.image = MetalBlockSprite().image
 
     def is_destructible(self):
         return False
@@ -32,7 +30,7 @@ class MetalPlate(Block, Obstacle, ABC):
 class Box(Block, Obstacle, ABC):
     def __init__(self, x, y):
         Block.__init__(self, x, y)
-        self.image = image.load("%s\\box40.png" % sprites_dir)
+        self.image = BoxBlockSprite().image
 
     def is_destructible(self):
         return True
@@ -41,4 +39,4 @@ class Box(Block, Obstacle, ABC):
 class GrassFloor:
     def __init__(self):
         self.image = Surface((BLOCK_SIZE, BLOCK_SIZE))
-        self.image = image.load("%s\\floor40.png" % sprites_dir)
+        self.image = GrassBlockSprite().image

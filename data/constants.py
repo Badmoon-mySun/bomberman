@@ -1,4 +1,5 @@
 from pygame import *
+from os import path
 
 # Размер блока
 BLOCK_SIZE = 40
@@ -33,3 +34,7 @@ P2_LEFT = K_a
 P2_RIGHT = K_d
 P2_DROP = K_v
 P2_SETUP = [P2_UP, P2_DOWN, P2_LEFT, P2_RIGHT, P2_DROP]
+
+FPS = 60
+
+SPRITES_DIR = path.dirname(__file__).replace("data", "resources\\sprites")
