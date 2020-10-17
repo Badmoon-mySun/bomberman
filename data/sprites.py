@@ -10,7 +10,7 @@ WALK_FRAMES = 6
 
 
 class PlayerSprites:
-    def __init__(self, files_pred):
+    def __init__(self,  files_pred):
         self.up_stand = image.load(path.join(pl_sprites_dir, "%s_up.png" % files_pred))
         self.down_stand = image.load(path.join(pl_sprites_dir, "%s_down.png" % files_pred))
         self.left_stand = image.load(path.join(pl_sprites_dir, "%s_left.png" % files_pred))
@@ -30,7 +30,12 @@ class PlayerSprites:
 
 class BluePlayerSprites(PlayerSprites):
     def __init__(self):
-        PlayerSprites.__init__(self, "blue_player")
+        PlayerSprites.__init__(self, "blue_player/blue_player")
+
+
+class WhitePlayerSprites(PlayerSprites):
+    def __init__(self):
+        PlayerSprites.__init__(self, "white_player/white_player")
 
 
 class BlockSpriteSingleton:

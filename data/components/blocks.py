@@ -38,5 +38,4 @@ class Box(Block, Obstacle, ABC):
 
 class GrassFloor:
     def __init__(self):
-        self.image = Surface((BLOCK_SIZE, BLOCK_SIZE))
         self.image = GrassBlockSprite().image

@@ -5,7 +5,7 @@ class Level:
     def __init__(self, screen, x, y):
         self.screen = screen
         self.entities = sprite.Group()
-        self.floor_surf = Surface((WIN_WIDTH, WIN_HEIGHT))
+        self.floor_surf = Surface(SCREEN_SIZE)
         self.player_pos = {}
         self.obstacles = []
         self.x, self.y = x, y
@@ -35,6 +35,20 @@ first_level = ["###############",
                "# # #-#-#-#-# #",
                "#3  --- ---  2#",
                "###############"]
+
+second_level = ["###############",
+                "#1   ------  4#",
+                "# #-#-#-#-#-# #",
+                "#  ---- - - - #",
+                "#-#-#-#-#-#-#-#",
+                "#----- -------#",
+                "#-#-#-# #-#-# #",
+                "# --   - -----#",
+                "#-# # #-#-#-#-#",
+                "# - ----  --- #",
+                "# # #-#-#-#-# #",
+                "#3  --- ---  2#",
+                "###############"]
 
 
 class FirstLevel(Level):
