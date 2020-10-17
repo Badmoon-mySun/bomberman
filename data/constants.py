@@ -8,6 +8,10 @@ BLOCK_SIZE = 40
 PLAYER_WIDTH = 34
 PLAYER_HEIGHT = 48
 
+# Размеры ХитБокса игрока
+PL_MASK_WIDTH = 30
+PL_MASK_HEIGHT = 15
+
 # Количество блоков в ширину и в длину
 WIDTH_BLOCKS_COUNT = 15
 HEIGHT_BLOCS_COUNT = 13
@@ -17,7 +21,7 @@ WIN_WIDTH = WIDTH_BLOCKS_COUNT * BLOCK_SIZE
 WIN_HEIGHT = HEIGHT_BLOCS_COUNT * BLOCK_SIZE
 
 # Скорость игроков по умолчанию
-PLAYER_SPEED = 2
+PLAYER_SPEED = 1
 
 # Раскладка первого игрока
 P1_UP = K_UP
@@ -38,3 +42,5 @@ P2_SETUP = [P2_UP, P2_DOWN, P2_LEFT, P2_RIGHT, P2_DROP]
 FPS = 60
 
 SPRITES_DIR = path.dirname(__file__).replace("data", "resources\\sprites")
+
+BOMB_DEFAULT_COUNT = 2

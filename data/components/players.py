@@ -1,21 +1,31 @@
 from data.sprites import *
 from data.constants import *
 from pygame import *
+from .bombs import Bomb
 
 
 class Player(sprite.Sprite):
-    def __init__(self, level, sprites, setup, x, y):
+    def __init__(self, level, sprites, setup, position):
         sprite.Sprite.__init__(self)
-        self.rect = Rect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT)
-        self.image = sprites.down_stand
+        self.rect = Rect(position, (PLAYER_WIDTH, PLAYER_HEIGHT))
         self.speed = PLAYER_SPEED
         self.sprites = sprites
         self.anim_count = 0
         self.setup = setup
         self.level = level
         self.last_move = "down"
+        self.max_bomb_count = BOMB_DEFAULT_COUNT
+        self.bombs_dropped = []
+        self.player_mask = Rect((0, 0), (PL_MASK_WIDTH, PL_MASK_HEIGHT))
+        self.__move_mask(position)
+        level.add_player(self)
 
-        level.entities.add(self)
+    def __move_mask(self, player_pos):
+        # config
+        position_x = player_pos[0] + 1
+        position_y = player_pos[1] + (PLAYER_HEIGHT - PL_MASK_HEIGHT)
+
+        self.player_mask.topleft = (position_x, position_y)
 
     def was_last_move(self, move):
         res = self.last_move == move
@@ -28,11 +38,26 @@ class Player(sprite.Sprite):
         return res
 
     def frame_num(self, frames_count):
-        pl_fps = FPS // 2
+        pl_fps = FPS // 1.5
         if self.anim_count >= pl_fps:
             self.anim_count = 0
 
         return int(self.anim_count / (pl_fps / frames_count))
+
+    def set_bomb(self, position):
+        for bomb in self.bombs_dropped:
+            if not bomb.alive():
+                self.bombs_dropped.remove(bomb)
+
+        flag = True
+        for bomb in self.bombs_dropped:
+            if bomb.rect.topleft == position:
+                flag = False
+
+        bomb_count = len(self.bombs_dropped)
+        if self.max_bomb_count > bomb_count and flag:
+            bomb = Bomb(3, self.level, position)
+            self.bombs_dropped.append(bomb)
 
     def update(self, keys):
         last_x, last_y = self.rect.x, self.rect.y
@@ -67,9 +92,19 @@ class Player(sprite.Sprite):
             elif self.last_move == "right":
                 self.image = self.sprites.right_stand
 
+        if keys[self.setup[4]]:
+            x = self.rect.centerx // BLOCK_SIZE * BLOCK_SIZE
+            y = (self.rect.centery + 8) // BLOCK_SIZE * BLOCK_SIZE
+
+            self.set_bomb((x, y))
+
+        self.__move_mask((self.rect.x, self.rect.y))
+
         for obs in self.level.obstacles:
-            if sprite.collide_rect(self, obs):
-                if self.rect.y - 20 < obs.rect.y:
-                    self.rect.x = last_x
-                    self.rect.y = last_y
-                    break
+            if Rect.colliderect(self.player_mask, obs.rect):
+                self.__move_mask((last_x, last_y))
+                self.rect.x = last_x
+                self.rect.y = last_y
+                break
+
+

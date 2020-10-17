@@ -10,8 +10,7 @@ clock = time.Clock()
 screen = display.set_mode((WIN_WIDTH, WIN_HEIGHT), HWSURFACE | DOUBLEBUF)
 
 level = FirstLevel(screen, 0, 0)
-pl_pos = level.get_player_position(1)
-player = Player(level, BluePlayerSprites(), P1_SETUP, pl_pos[0], pl_pos[1])
+player = Player(level, BluePlayerSprites(), P1_SETUP, level.get_player_position(1))
 
 game_alive = True
 while game_alive:
