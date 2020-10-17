@@ -22,8 +22,8 @@ display.set_caption(TITLE)
 level = FirstLevel(screen, 0, 0)
 pl_pos = level.get_player_position(1)
 p2_pos = level.get_player_position(2)
-player1 = Player(level, BluePlayerSprites(), P1_SETUP, pl_pos[0], pl_pos[1])
-player2 = Player(level, WhitePlayerSprites(), P2_SETUP, p2_pos[0], p2_pos[1] - 9)
+player1 = Player(level, BluePlayerSprites(), P1_SETUP, (pl_pos[0], pl_pos[1]))
+player2 = Player(level, WhitePlayerSprites(), P2_SETUP, (p2_pos[0], p2_pos[1] - 9))
 
 game_alive = True
 while game_alive:
