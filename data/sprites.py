@@ -71,3 +71,39 @@ class MetalBlockSprite(BlockSprite):
 class GrassBlockSprite(BlockSprite):
     def __init__(self):
         BlockSprite.__init__(self, "grass")
+
+
+class ExplosionSpritesSingleton:
+    __instance = {}
+
+    @staticmethod
+    def get_instance(file_pred, play_count):
+        instance = ExplosionSpritesSingleton.__instance
+        if file_pred not in instance:
+            instance[file_pred] = ExplosionSpritesSingleton(file_pred, play_count)
+            return instance[file_pred]
+        return instance[file_pred]
+
+    def __init__(self, files_pred, play_count):
+        self.explosion_play = [image.load(path.join(SPRITES_DIR, "bomb\\%s_%s.png"
+                                                    % (files_pred, i))) for i in range(1, play_count + 1)]
+
+
+class ExplosionBlockSprite:
+    def __init__(self, file_pred, play_count):
+        self.explosion_play = ExplosionSpritesSingleton.get_instance(file_pred, play_count).explosion_play
+
+
+class ExplosionCenterSprites(ExplosionBlockSprite):
+    def __init__(self):
+        ExplosionBlockSprite.__init__(self, "explosion_center", 4)
+
+
+class ExplosionBodySprites(ExplosionBlockSprite):
+    def __init__(self):
+        ExplosionBlockSprite.__init__(self, "explosion_body", 4)
+
+
+class ExplosionFinishSprites(ExplosionBlockSprite):
+    def __init__(self):
+        ExplosionBlockSprite.__init__(self, "explosion_finish", 4)
