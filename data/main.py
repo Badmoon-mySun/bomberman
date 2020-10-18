@@ -1,9 +1,7 @@
+from data.components.players import *
+from data.states.levels import FirstLevel
 from data.states.menu import *
 from data.states.pause import *
-from data.states.levels import *
-from data.components.players import *
-from data.constants import *
-from pygame import *
 
 init()
 
@@ -19,12 +17,6 @@ clock = time.Clock()
 screen = display.set_mode(SCREEN_SIZE, HWSURFACE | DOUBLEBUF)
 display.set_caption(TITLE)
 
-level = FirstLevel(screen, 0, 0)
-pl1_pos = level.get_player_position(1)
-pl2_pos = level.get_player_position(2)
-player1 = Player(level, WhitePlayerSprites(), P1_SETUP, pl1_pos)
-player2 = Player(level, BluePlayerSprites(), P2_SETUP, pl2_pos)
-
 game_alive = True
 while game_alive:
 
@@ -37,12 +29,21 @@ while game_alive:
     if menu_alive:
         mixer.music.load(music_sounds_dir + 'menu_music.mp3')
         mixer.music.play(-1)
-        menu_draw(screen, clock)
+        mixer.music.set_volume(0.1)
+        level = menu_draw(screen, clock)
+        if level == 1:
+            level = FirstLevel(screen, 0, 0)
+            level.update_level()
+            pl_pos = level.get_player_position(1)
+            p2_pos = level.get_player_position(2)
+            player1 = Player(level, BluePlayerSprites(), P1_SETUP, (pl_pos[0], pl_pos[1]))
+            player2 = Player(level, WhitePlayerSprites(), P2_SETUP, (p2_pos[0], p2_pos[1] - 9))
         menu_alive = False
         mixer.music.stop()
         mixer.music.load(music_sounds_dir + 'game_music.ogg')
         mixer.music.play(-1)
 
+    keys = key.get_pressed()
     level.update_level()
 
     display.flip()
