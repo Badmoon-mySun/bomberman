@@ -73,7 +73,7 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
 
         x = bomb.rect.x
         y = bomb.rect.y
-        self.level.entities.add(ExplosionCenterBlock((x, y)))
+        add_explosion(ExplosionCenterBlock(bomb.rect.topleft))
 
         line_explosion([(x + (BLOCK_SIZE * i), y) for i in range(1, bomb.force)])
         line_explosion([[x - (BLOCK_SIZE * i), y] for i in range(1, bomb.force)], 180)
