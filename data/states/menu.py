@@ -1,12 +1,10 @@
 from data.constants import *
-from pygame import *
 from data.sprites import *
-from data.constants import SPRITES_DIR
 
 menu_sprites_dir = path.join(SPRITES_DIR, "menu/")
-length_line = 200
-line_point = length_line // 100
-volume_size = 100
+length_line = 20
+line_point = 200 // 100
+volume_size = 10
 
 
 class MainImage1:
@@ -39,26 +37,28 @@ class Exit(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
         self.image = image.load(menu_sprites_dir + "exit.png")
-        self.rect = self.image.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 150))
-
-
-class MenuTime(sprite.Sprite):
-    def __init__(self):
-        sprite.Sprite.__init__(self)
-        self.image = image.load(menu_sprites_dir + "menu.png")
-        self.rect = self.image.get_rect()
-        self.play = Play()
-        self.settings = Settings()
-        self.exit = Exit()
-        self.mainImage1 = MainImage1()
-        self.mainImage2 = MainImage2()
+        self.rect = self.image.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 190))
 
 
 class Back(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
         self.image = image.load(menu_sprites_dir + "back.png")
-        self.rect = self.image.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 150))
+        self.rect = self.image.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 190))
+
+
+class Level1(sprite.Sprite):
+    def __init__(self):
+        sprite.Sprite.__init__(self)
+        self.image = image.load(menu_sprites_dir + "level1.png")
+        self.rect = self.image.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 70))
+
+
+class Level2(sprite.Sprite):
+    def __init__(self):
+        sprite.Sprite.__init__(self)
+        self.image = image.load(menu_sprites_dir + "level2.png")
+        self.rect = self.image.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 110))
 
 
 class Volume(sprite.Sprite):
@@ -117,12 +117,14 @@ def draw_volume_line(screen, clock, events):
     clock.tick(FPS)
 
 
-class SettingsTime(sprite.Sprite):
+class MenuTime(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
         self.image = image.load(menu_sprites_dir + "menu.png")
         self.rect = self.image.get_rect()
-        self.back = Back()
+        self.play = Play()
+        self.settings = Settings()
+        self.exit = Exit()
         self.mainImage1 = MainImage1()
         self.mainImage2 = MainImage2()
 
@@ -151,11 +153,23 @@ def menu_draw(screen, clock):
                 exit()
             elif i.type == MOUSEBUTTONDOWN:
                 if menu.play.rect.collidepoint(i.pos):
-                    menu_alive = False
+                    choice = level_menu_draw(screen, clock)
+                    if choice != 0:
+                        return choice
                 if menu.settings.rect.collidepoint(i.pos):
                     settings_draw(screen, clock)
                 if menu.exit.rect.collidepoint(i.pos):
                     exit()
+
+
+class SettingsTime(sprite.Sprite):
+    def __init__(self):
+        sprite.Sprite.__init__(self)
+        self.image = image.load(menu_sprites_dir + "menu.png")
+        self.rect = self.image.get_rect()
+        self.back = Back()
+        self.mainImage1 = MainImage1()
+        self.mainImage2 = MainImage2()
 
 
 def settings_update(clock, events):
@@ -188,3 +202,48 @@ def settings_draw(screen, clock):
             elif i.type == MOUSEBUTTONDOWN:
                 if settings.back.rect.collidepoint(i.pos):
                     settings_alive = False
+
+
+class LevelMenuTime(sprite.Sprite):
+    def __init__(self):
+        sprite.Sprite.__init__(self)
+        self.image = image.load(menu_sprites_dir + "menu.png")
+        self.rect = self.image.get_rect()
+        self.level1 = Level1()
+        self.level2 = Level2()
+        self.back = Back()
+        self.mainImage1 = MainImage1()
+        self.mainImage2 = MainImage2()
+
+
+def level_menu_update():
+    level_menu = LevelMenuTime()
+    level_menu.image.blit(level_menu.mainImage2.image, level_menu.mainImage2.rect)
+    level_menu.image.blit(level_menu.mainImage1.image, level_menu.mainImage1.rect)
+    level_menu.image.blit(level_menu.level1.image, level_menu.level1.rect)
+    level_menu.image.blit(level_menu.level2.image, level_menu.level2.rect)
+    level_menu.image.blit(level_menu.back.image, level_menu.back.rect)
+    return level_menu
+
+
+def level_menu_draw(screen, clock):
+    level_menu_alive = True
+
+    while level_menu_alive:
+        level_menu = level_menu_update()
+        screen.blit(level_menu.image, level_menu.rect)
+        display.flip()
+        clock.tick(FPS)
+
+        for i in event.get():
+            if i.type == QUIT:
+                exit()
+            elif i.type == KEYDOWN and i.key == K_ESCAPE:
+                return 0
+            elif i.type == MOUSEBUTTONDOWN:
+                if level_menu.level1.rect.collidepoint(i.pos):
+                    return 1
+                if level_menu.level2.rect.collidepoint(i.pos):
+                    return 2
+                if level_menu.back.rect.collidepoint(i.pos):
+                    return 0
