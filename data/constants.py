@@ -42,6 +42,9 @@ MENU_COLOR = BROWN
 
 # Скорость игроков по умолчанию
 PLAYER_SPEED = 1
+PLAYER_HP = 2
+PLAYER_BOMB_COUNT = 2
+PLAYER_FORCE = 2
 
 # Раскладка первого игрока
 P1_UP = K_UP
@@ -64,4 +67,3 @@ FPS = 60
 SPRITES_DIR = path.dirname(__file__).replace("data", "resources\\sprites")
 SOUNDS_DIR = path.dirname(__file__).replace("data", "resources\\sounds")
 
-BOMB_DEFAULT_COUNT = 2

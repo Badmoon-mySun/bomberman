@@ -2,7 +2,7 @@ from abc import ABC
 
 from pygame import *
 from data.constants import BLOCK_SIZE, SPRITES_DIR
-from .blocks import AnimatedBlock, Obstacle
+from .blocks import AnimatedBlock, Obstacle, ExplosionBodyBlock, ExplosionFinishBlock, ExplosionCenterBlock
 
 
 class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
@@ -39,5 +39,47 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
         sprite.Sprite.kill(self)
         if self.its_obstacle:
             self.level.obstacles.remove(self)
-        self.level.bomb_explosion(self)
+        self.bomb_explosion(self)
 
+    def bomb_explosion(self, bomb):
+        def add_explosion_block(block):
+            flag = True
+            for en in self.level.entities:
+                if sprite.collide_rect(block, en):
+                    if isinstance(en, Obstacle) and isinstance(en, sprite.Sprite) and en.is_destructible():
+                        en.kill()
+                        if en in self.level.obstacles:
+                            self.level.obstacles.remove(en)
+                        flag = False
+                    else:
+                        return False
+
+            for pl in self.level.players:
+                if Rect.colliderect(block.rect, pl.player_mask):
+                    pl.damage()
+
+            self.level.entities.add(block)
+            return flag
+
+        def line_explosion_blocks(array_pos, angle=0):
+            for position in array_pos:
+                if position != array_pos[len(array_pos) - 1]:
+                    blk = ExplosionBodyBlock(position[0], position[1])
+                else:
+                    blk = ExplosionFinishBlock(position[0], position[1])
+
+                if angle:
+                    play = blk.explosion_play
+                    blk.explosion_play = [transform.rotate(play[i], angle) for i in range(len(play))]
+
+                if not add_explosion_block(blk):
+                    break
+
+        x = bomb.rect.x
+        y = bomb.rect.y
+        self.level.entities.add(ExplosionCenterBlock(x, y))
+
+        line_explosion_blocks([(x + (BLOCK_SIZE * i), y) for i in range(1, bomb.force)])
+        line_explosion_blocks([[x - (BLOCK_SIZE * i), y] for i in range(1, bomb.force)], 180)
+        line_explosion_blocks([[x, y - (BLOCK_SIZE * i)] for i in range(1, bomb.force)], 90)
+        line_explosion_blocks([[x, y + (BLOCK_SIZE * i)] for i in range(1, bomb.force)], 270)

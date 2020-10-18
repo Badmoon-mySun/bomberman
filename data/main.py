@@ -43,10 +43,6 @@ while game_alive:
         mixer.music.load(music_sounds_dir + 'game_music.ogg')
         mixer.music.play(-1)
 
-    keys = key.get_pressed()
-
-    player1.update(keys)
-    player2.update(keys)
     level.update_level()
 
     display.flip()
