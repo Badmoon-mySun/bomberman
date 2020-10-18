@@ -1,6 +1,7 @@
 import random
 
 from data.components.blocks import *
+from data.components.bombs import Bomb
 from data.components.bonuses import all_bonuses
 
 
@@ -40,13 +41,11 @@ class Level:
 
     def blow_up_block(self, entity):
         entity.kill()
-        if random.choice([0, 1]):
+        if not isinstance(entity, Bomb) and not random.choice([0, 1, 2]):
             bonus_class = random.choice(all_bonuses)
             bonus = bonus_class(entity.rect.topleft)
             self.obstacles.add(bonus)
             self.entities.add(bonus)
-
-
 
 
 first_level = ["###############",
@@ -72,7 +71,7 @@ class FirstLevel(Level):
 
     def __draw_level(self):
         x, y = self.x, self.y  # Координаты экрана с которого начинается прорисовка уровня
-        floor = GrassFloor()  # Пол - трава
+        floor = GrassFloor()
 
         for line in first_level:
             for blk in line:
@@ -88,7 +87,7 @@ class FirstLevel(Level):
                     self.obstacles.add(obstacle)  # Добавляем в список для проверки коллизий
 
                 elif blk in [str(i) for i in range(5)]:
-                    self.player_pos[blk] = (x, y)
+                    self.player_pos[blk] = (x, y - PLAYER_HEIGHT + BLOCK_SIZE)
 
                 x += BLOCK_SIZE
             y += BLOCK_SIZE

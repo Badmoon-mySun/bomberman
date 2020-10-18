@@ -21,8 +21,8 @@ class PlayerSprites:
         self.right_play = [image.load(path.join(SPRITES_DIR, "%s_right_%s.png" % (files_pred, i)))
                            for i in range(1, WALK_FRAMES + 1)]
 
-        # self.death_play = [image.load("%s\\%s_death_%s.png" %
-        #                               (pl_sprites_dir, files_pred, i)) for i in range(1, DEATH_FRAMES)]
+        self.death_play = [image.load(path.join(SPRITES_DIR, "%s_death_%s.png" % (files_pred, i)))
+                           for i in range(1, DEATH_FRAMES + 1)]
 
 
 class BluePlayerSprites(PlayerSprites):
