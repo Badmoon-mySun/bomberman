@@ -76,11 +76,11 @@ second_level = ["###############",
                 "###############"]
 
 
-def draw_level(level):
+def draw_level(level, number_level):
     x, y = level.x, level.y  # Координаты экрана с которого начинается прорисовка уровня
     floor = GrassFloor()  # Пол - трава
 
-    for line in first_level:
+    for line in number_level:
         for blk in line:
             level.floor_surf.blit(floor.image, (x, y))
 
@@ -104,10 +104,10 @@ def draw_level(level):
 class FirstLevel(Level):
     def __init__(self, screen, x, y):
         Level.__init__(self, screen, x, y)
-        draw_level(self)
+        draw_level(self, first_level)
 
 
 class SecondLevel(Level):
     def __init__(self, screen, x, y):
         Level.__init__(self, screen, x, y)
-        draw_level(self)
+        draw_level(self, second_level)
