@@ -105,9 +105,7 @@ def update_volume_line(events):
         if i.type == MOUSEBUTTONDOWN:
             if volume.rect_sc_bg_volume_line.collidepoint(i.pos[0], i.pos[1]):
                 length_line = i.pos[0] - WIN_WIDTH // 2 + volume.image.get_width() // 2
-                print(length_line)
                 volume_size = length_line // line_point
-                print(volume_size)
 
     return volume
 

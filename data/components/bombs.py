@@ -37,6 +37,7 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
 
     def kill(self):
         sprite.Sprite.kill(self)
-        self.level.bomb_explosion(self)
         if self.its_obstacle:
             self.level.obstacles.remove(self)
+        self.level.bomb_explosion(self)
+

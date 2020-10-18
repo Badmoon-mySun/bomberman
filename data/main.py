@@ -1,5 +1,5 @@
-from data.components.menu import *
-from data.components.pause import *
+from data.states.menu import *
+from data.states.pause import *
 from data.states.levels import *
 from data.components.players import *
 from data.constants import *

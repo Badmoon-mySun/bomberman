@@ -93,8 +93,8 @@ class Player(sprite.Sprite):
                 self.image = self.sprites.right_stand
 
         if keys[self.setup[4]]:
-            x = self.rect.centerx // BLOCK_SIZE * BLOCK_SIZE
-            y = (self.rect.centery + 8) // BLOCK_SIZE * BLOCK_SIZE
+            x = self.player_mask.centerx // BLOCK_SIZE * BLOCK_SIZE
+            y = self.player_mask.centery // BLOCK_SIZE * BLOCK_SIZE
 
             self.set_bomb((x, y))
 
@@ -106,5 +106,3 @@ class Player(sprite.Sprite):
                 self.rect.x = last_x
                 self.rect.y = last_y
                 break
-
-
