@@ -1,14 +1,17 @@
+import random
+
 from data.components.blocks import *
+from data.components.bonuses import all_bonuses
 
 
 class Level:
     def __init__(self, screen, x, y):
         self.screen = screen
+        self.obstacles = sprite.Group()
         self.entities = sprite.Group()
+        self.players = sprite.Group()
         self.floor_surf = Surface(SCREEN_SIZE)
         self.player_pos = {}
-        self.obstacles = []
-        self.players = []
         self.x, self.y = x, y
 
     def update_level(self):
@@ -31,9 +34,19 @@ class Level:
 
     def add_player(self, player):
         if len(self.players) < len(self.player_pos):
-            self.players.append(player)
+            self.players.add(player)
         else:
             raise Exception("There is no place for a player")
+
+    def blow_up_block(self, entity):
+        entity.kill()
+        if random.choice([0, 1]):
+            bonus_class = random.choice(all_bonuses)
+            bonus = bonus_class(entity.rect.topleft)
+            self.obstacles.add(bonus)
+            self.entities.add(bonus)
+
+
 
 
 first_level = ["###############",
@@ -67,12 +80,12 @@ class FirstLevel(Level):
 
                 if blk not in [" ", "1", "2", "3", "4"]:
                     if blk == "#":
-                        obstacle = MetalPlate(x, y)
+                        obstacle = MetalPlate((x, y))
                     else:
-                        obstacle = Box(x, y)
+                        obstacle = Box((x, y))
 
                     self.entities.add(obstacle)  # Добавляем в Group для прорисовки
-                    self.obstacles.append(obstacle)  # Добавляем в список для проверки коллизий
+                    self.obstacles.add(obstacle)  # Добавляем в список для проверки коллизий
 
                 elif blk in [str(i) for i in range(5)]:
                     self.player_pos[blk] = (x, y)

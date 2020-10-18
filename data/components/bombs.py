@@ -20,11 +20,11 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
         if not self.its_obstacle:
             flag = True
             for pl in self.level.players:
-                if sprite.collide_rect(self, pl):
+                if Rect.colliderect(self.rect, pl.player_mask):
                     flag = False
 
             if flag:
-                self.level.obstacles.append(self)
+                self.level.obstacles.add(self)
                 self.its_obstacle = True
 
         self.image = self.image
@@ -37,19 +37,15 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
 
     def kill(self):
         sprite.Sprite.kill(self)
-        if self.its_obstacle:
-            self.level.obstacles.remove(self)
         self.bomb_explosion(self)
 
     def bomb_explosion(self, bomb):
-        def add_explosion_block(block):
+        def add_explosion(block):
             flag = True
             for en in self.level.entities:
                 if sprite.collide_rect(block, en):
                     if isinstance(en, Obstacle) and isinstance(en, sprite.Sprite) and en.is_destructible():
-                        en.kill()
-                        if en in self.level.obstacles:
-                            self.level.obstacles.remove(en)
+                        self.level.blow_up_block(en)
                         flag = False
                     else:
                         return False
@@ -61,25 +57,25 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
             self.level.entities.add(block)
             return flag
 
-        def line_explosion_blocks(array_pos, angle=0):
+        def line_explosion(array_pos, angle=0):
             for position in array_pos:
                 if position != array_pos[len(array_pos) - 1]:
-                    blk = ExplosionBodyBlock(position[0], position[1])
+                    blk = ExplosionBodyBlock(position)
                 else:
-                    blk = ExplosionFinishBlock(position[0], position[1])
+                    blk = ExplosionFinishBlock(position)
 
                 if angle:
                     play = blk.explosion_play
                     blk.explosion_play = [transform.rotate(play[i], angle) for i in range(len(play))]
 
-                if not add_explosion_block(blk):
+                if not add_explosion(blk):
                     break
 
         x = bomb.rect.x
         y = bomb.rect.y
-        self.level.entities.add(ExplosionCenterBlock(x, y))
+        self.level.entities.add(ExplosionCenterBlock((x, y)))
 
-        line_explosion_blocks([(x + (BLOCK_SIZE * i), y) for i in range(1, bomb.force)])
-        line_explosion_blocks([[x - (BLOCK_SIZE * i), y] for i in range(1, bomb.force)], 180)
-        line_explosion_blocks([[x, y - (BLOCK_SIZE * i)] for i in range(1, bomb.force)], 90)
-        line_explosion_blocks([[x, y + (BLOCK_SIZE * i)] for i in range(1, bomb.force)], 270)
+        line_explosion([(x + (BLOCK_SIZE * i), y) for i in range(1, bomb.force)])
+        line_explosion([[x - (BLOCK_SIZE * i), y] for i in range(1, bomb.force)], 180)
+        line_explosion([[x, y - (BLOCK_SIZE * i)] for i in range(1, bomb.force)], 90)
+        line_explosion([[x, y + (BLOCK_SIZE * i)] for i in range(1, bomb.force)], 270)

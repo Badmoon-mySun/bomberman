@@ -2,6 +2,7 @@ from data.sprites import *
 from data.constants import *
 from pygame import *
 from .bombs import Bomb
+from .bonuses import Bonus
 
 
 class Player(sprite.Sprite):
@@ -58,7 +59,7 @@ class Player(sprite.Sprite):
 
         bomb_count = len(self.bombs_dropped)
         if self.max_bomb_count > bomb_count and flag:
-            bomb = Bomb(3, self.level, position)
+            bomb = Bomb(self.force, self.level, position)
             self.bombs_dropped.append(bomb)
 
     def damage(self):
@@ -109,15 +110,14 @@ class Player(sprite.Sprite):
 
             for obs in self.level.obstacles:
                 if Rect.colliderect(self.player_mask, obs.rect):
-                    self.__move_mask((last_x, last_y))
-                    self.rect.x = last_x
-                    self.rect.y = last_y
+                    if isinstance(obs, Bonus):
+                        obs.use_bonus(self)
+                    else:
+                        self.__move_mask((last_x, last_y))
+                        self.rect.x = last_x
+                        self.rect.y = last_y
                     break
         else:
             self.was_last_move("die")
             # self.image = self.sprites.death_play[self.frame_num(WALK_FRAMES)]
             self.kill()
-
-    def kill(self):
-        sprite.Sprite.kill(self)
-        self.level.players.remove(self)

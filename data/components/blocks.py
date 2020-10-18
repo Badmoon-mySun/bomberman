@@ -1,4 +1,3 @@
-import random
 from abc import abstractmethod, ABC
 
 from data.constants import *
@@ -19,15 +18,15 @@ class AnimatedBlock:
 
 
 class Block(sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, position):
         sprite.Sprite.__init__(self)
         self.image = Surface((BLOCK_SIZE, BLOCK_SIZE))
-        self.rect = Rect(x, y, BLOCK_SIZE, BLOCK_SIZE)
+        self.rect = Rect(position, (BLOCK_SIZE, BLOCK_SIZE))
 
 
 class MetalPlate(Block, Obstacle, ABC):
-    def __init__(self, x, y):
-        Block.__init__(self, x, y)
+    def __init__(self, position):
+        Block.__init__(self, position)
         self.image = MetalBlockSprite().image
 
     def is_destructible(self):
@@ -35,8 +34,8 @@ class MetalPlate(Block, Obstacle, ABC):
 
 
 class Box(Block, Obstacle, ABC):
-    def __init__(self, x, y):
-        Block.__init__(self, x, y)
+    def __init__(self, position):
+        Block.__init__(self, position)
         self.image = BoxBlockSprite().image
 
     def is_destructible(self):
@@ -44,8 +43,8 @@ class Box(Block, Obstacle, ABC):
 
 
 class ExplosionCenterBlock(Block, AnimatedBlock, ABC):
-    def __init__(self, x, y):
-        Block.__init__(self, x, y)
+    def __init__(self, position):
+        Block.__init__(self, position)
         self.explosion_play = ExplosionCenterSprites().explosion_play
         self.anim_count = 0
 
@@ -58,8 +57,8 @@ class ExplosionCenterBlock(Block, AnimatedBlock, ABC):
 
 
 class ExplosionBodyBlock(Block, AnimatedBlock, ABC):
-    def __init__(self, x, y):
-        Block.__init__(self, x, y)
+    def __init__(self, position):
+        Block.__init__(self, position)
         self.explosion_play = ExplosionBodySprites().explosion_play
         self.anim_count = 0
 
@@ -72,8 +71,8 @@ class ExplosionBodyBlock(Block, AnimatedBlock, ABC):
 
 
 class ExplosionFinishBlock(Block, AnimatedBlock, ABC):
-    def __init__(self, x, y):
-        Block.__init__(self, x, y)
+    def __init__(self, position):
+        Block.__init__(self, position)
         self.explosion_play = ExplosionFinishSprites().explosion_play
         self.anim_count = 0
 
