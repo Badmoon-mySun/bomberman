@@ -1,5 +1,5 @@
 from data.components.players import *
-from data.states.levels import FirstLevel
+from data.states.levels import FirstLevel, SecondLevel
 from data.states.menu import *
 from data.states.pause import *
 
@@ -33,11 +33,12 @@ while game_alive:
         level = menu_draw(screen, clock)
         if level == 1:
             level = FirstLevel(screen, 0, 0)
-            level.update_level()
-            pl_pos = level.get_player_position(1)
-            p2_pos = level.get_player_position(2)
-            player1 = Player(level, BluePlayerSprites(), P1_SETUP, (pl_pos[0], pl_pos[1]))
-            player2 = Player(level, WhitePlayerSprites(), P2_SETUP, (p2_pos[0], p2_pos[1] - 9))
+        elif level == 2:
+            level = SecondLevel(screen, 0, 0)
+        pl_pos = level.get_player_position(1)
+        p2_pos = level.get_player_position(2)
+        player1 = Player(level, BluePlayerSprites(), P1_SETUP, (pl_pos[0], pl_pos[1]))
+        player2 = Player(level, WhitePlayerSprites(), P2_SETUP, (p2_pos[0], p2_pos[1] - 9))
         menu_alive = False
         mixer.music.stop()
         mixer.music.load(music_sounds_dir + 'game_music.ogg')

@@ -47,8 +47,6 @@ class Level:
             self.entities.add(bonus)
 
 
-
-
 first_level = ["###############",
                "#1   ------  4#",
                "# #-#-#-#-#-# #",
@@ -63,33 +61,53 @@ first_level = ["###############",
                "#3  --- ---  2#",
                "###############"]
 
+second_level = ["###############",
+                "#1 - --#-- - 4#",
+                "# #- #- -# -# #",
+                "# #--- #- - # #",
+                "#- -#-#-#-#- -#",
+                "#-# --- --- #-#",
+                "# --#-#-#-#-- #",
+                "#-#--- - ---#-#",
+                "# - #-#-#-# - #",
+                "#-# --- --- #-#",
+                "# #--# - #--# #",
+                "#3 -# -#- #- 2#",
+                "###############"]
+
+
+def draw_level(level):
+    x, y = level.x, level.y  # Координаты экрана с которого начинается прорисовка уровня
+    floor = GrassFloor()  # Пол - трава
+
+    for line in first_level:
+        for blk in line:
+            level.floor_surf.blit(floor.image, (x, y))
+
+            if blk not in [" ", "1", "2", "3", "4"]:
+                if blk == "#":
+                    obstacle = MetalPlate((x, y))
+                else:
+                    obstacle = Box((x, y))
+
+                level.entities.add(obstacle)  # Добавляем в Group для прорисовки
+                level.obstacles.add(obstacle)  # Добавляем в список для проверки коллизий
+
+            elif blk in [str(i) for i in range(5)]:
+                level.player_pos[blk] = (x, y)
+
+            x += BLOCK_SIZE
+        y += BLOCK_SIZE
+        x = level.x
+
 
 class FirstLevel(Level):
     def __init__(self, screen, x, y):
         Level.__init__(self, screen, x, y)
+        draw_level(self)
 
-        self.__draw_level()
 
-    def __draw_level(self):
-        x, y = self.x, self.y  # Координаты экрана с которого начинается прорисовка уровня
-        floor = GrassFloor()  # Пол - трава
-
-        for line in first_level:
-            for blk in line:
-                self.floor_surf.blit(floor.image, (x, y))
-
-                if blk not in [" ", "1", "2", "3", "4"]:
-                    if blk == "#":
-                        obstacle = MetalPlate((x, y))
-                    else:
-                        obstacle = Box((x, y))
-
-                    self.entities.add(obstacle)  # Добавляем в Group для прорисовки
-                    self.obstacles.add(obstacle)  # Добавляем в список для проверки коллизий
-
-                elif blk in [str(i) for i in range(5)]:
-                    self.player_pos[blk] = (x, y)
-
-                x += BLOCK_SIZE
-            y += BLOCK_SIZE
-            x = self.x
+class SecondLevel(Level):
+    def __init__(self, screen, x, y):
+        Level.__init__(self, screen, x, y)
+        draw_level(self)
