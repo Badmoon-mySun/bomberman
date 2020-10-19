@@ -1,14 +1,17 @@
 from abc import ABC
 
 from pygame import *
-from data.constants import BLOCK_SIZE, SPRITES_DIR
+from data.constants import BLOCK_SIZE, SPRITES_DIR, SOUNDS_DIR
 from .blocks import AnimatedBlock, Obstacle, ExplosionBodyBlock, ExplosionFinishBlock, ExplosionCenterBlock
+from os import path
 
 
 class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
     def __init__(self, force, level, position):
         sprite.Sprite.__init__(self)
-        self.image = image.load(SPRITES_DIR + "\\bomb\\bomb.png")
+        self.image = image.load(path.join(SPRITES_DIR, "bomb/bomb.png"))
+        self.explosion_sound = mixer.Sound(path.join(SOUNDS_DIR, "effects/explosion.wav"))
+        self.explosion_sound.set_volume(0.5)
         self.rect = Rect(position, (BLOCK_SIZE, BLOCK_SIZE))
         self.its_obstacle = False
         self.time_delay = 100
@@ -37,6 +40,7 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
 
     def kill(self):
         sprite.Sprite.kill(self)
+        self.explosion_sound.play()
         self.bomb_explosion(self)
 
     def bomb_explosion(self, bomb):

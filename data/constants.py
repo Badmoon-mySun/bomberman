@@ -28,7 +28,7 @@ PL_MASK_HEIGHT = 15
 
 # Количество блоков в ширину и в длину
 WIDTH_BLOCKS_COUNT = 15
-HEIGHT_BLOCS_COUNT = 13
+HEIGHT_BLOCS_COUNT = 14
 
 # Высчитываем размеры экрана в зависимости от количества и размера блоков
 SCREEN_SIZE = (WIN_WIDTH, WIN_HEIGHT) = (WIDTH_BLOCKS_COUNT * BLOCK_SIZE, HEIGHT_BLOCS_COUNT * BLOCK_SIZE)
