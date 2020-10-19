@@ -1,5 +1,5 @@
-from .constants import SPRITES_DIR
-from pygame import image
+from .constants import SPRITES_DIR, WIN_WIDTH, WIN_HEIGHT
+from pygame import image, transform
 from os import path
 
 DEATH_FRAMES = 8
@@ -8,6 +8,7 @@ WALK_FRAMES = 6
 
 class PlayerSprites:
     def __init__(self,  files_pred):
+        self.icon = image.load(path.join(SPRITES_DIR, "%s_icon.png" % files_pred))
         self.up_stand = image.load(path.join(SPRITES_DIR, "%s_up.png" % files_pred))
         self.down_stand = image.load(path.join(SPRITES_DIR, "%s_down.png" % files_pred))
         self.left_stand = image.load(path.join(SPRITES_DIR, "%s_left.png" % files_pred))
@@ -21,8 +22,8 @@ class PlayerSprites:
         self.right_play = [image.load(path.join(SPRITES_DIR, "%s_right_%s.png" % (files_pred, i)))
                            for i in range(1, WALK_FRAMES + 1)]
 
-        # self.death_play = [image.load("%s\\%s_death_%s.png" %
-        #                               (pl_sprites_dir, files_pred, i)) for i in range(1, DEATH_FRAMES)]
+        self.death_play = [image.load(path.join(SPRITES_DIR, "%s_death_%s.png" % (files_pred, i)))
+                           for i in range(1, DEATH_FRAMES + 1)]
 
 
 class BluePlayerSprites(PlayerSprites):
@@ -86,6 +87,21 @@ class GrassBlockSprite(BlockSprite):
         BlockSprite.__init__(self, "block/grass")
 
 
+class BoardBlockSprite(BlockSprite):
+    def __init__(self):
+        BlockSprite.__init__(self, "block/board")
+
+
+class MetalColumnBlockSprite(BlockSprite):
+    def __init__(self):
+        BlockSprite.__init__(self, "block/metal_column")
+
+
+class RectGrassSprite(BlockSprite):
+    def __init__(self):
+        BlockSprite.__init__(self, "block/rect_grass")
+
+
 class ExplosionBlockSprite:
     def __init__(self, file_pred, play_count):
         self.explosion_play = BlockPlaySpriteSingleton.get_instance(file_pred, play_count).block_play
@@ -124,3 +140,18 @@ class BombBonusSprite(BlockSprite):
 class ForceBonusSprite(BlockSprite):
     def __init__(self):
         BlockSprite.__init__(self, "bonus/bonus_force")
+
+
+class BackgroundSprite(BlockSprite):
+    def __init__(self):
+        BlockSprite.__init__(self, "other/background")
+
+
+class PlayerHeartSprite(BlockSprite):
+    def __init__(self):
+        BlockSprite.__init__(self, "other/heart")
+
+
+class GameOverSprite:
+    def __init__(self):
+        self.image = transform.scale(image.load(path.join(SPRITES_DIR, "menu/game_over.jpg")), (WIN_WIDTH, WIN_HEIGHT))

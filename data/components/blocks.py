@@ -42,6 +42,24 @@ class Box(Block, Obstacle, ABC):
         return True
 
 
+class MetalColumn(Block, Obstacle, ABC):
+    def __init__(self, position):
+        Block.__init__(self, position)
+        self.image = MetalColumnBlockSprite().image
+
+    def is_destructible(self):
+        return False
+
+
+class Board(Block, Obstacle, ABC):
+    def __init__(self, position):
+        Block.__init__(self, position)
+        self.image = BoardBlockSprite().image
+
+    def is_destructible(self):
+        return True
+
+
 class ExplosionCenterBlock(Block, AnimatedBlock, ABC):
     def __init__(self, position):
         Block.__init__(self, position)
@@ -87,3 +105,18 @@ class ExplosionFinishBlock(Block, AnimatedBlock, ABC):
 class GrassFloor:
     def __init__(self):
         self.image = GrassBlockSprite().image
+
+
+class RectGrass:
+    def __init__(self):
+        self.image = RectGrassSprite().image
+
+
+class PlayerHeart:
+    def __init__(self):
+        self.image = PlayerHeartSprite().image
+
+
+class Background:
+    def __init__(self):
+        self.image = BackgroundSprite().image

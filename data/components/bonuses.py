@@ -1,10 +1,7 @@
 from abc import ABC
 
-from pygame import sprite
-from pygame.rect import Rect
-
 from data.components.blocks import Obstacle
-from data.constants import BLOCK_SIZE
+from data.constants import *
 from data.sprites import SpeedBonusSprite, BombBonusSprite, ForceBonusSprite, HealBonusSprite
 
 
@@ -26,7 +23,7 @@ class SpeedBonus(Bonus, ABC):
         self.image = SpeedBonusSprite().image
 
     def use_bonus(self, player):
-        if player.speed < 6:
+        if player.speed <= MAX_PLAYER_SPEED:
             player.speed += 1
 
         self.kill()
@@ -38,8 +35,8 @@ class BombBonus(Bonus, ABC):
         self.image = BombBonusSprite().image
 
     def use_bonus(self, player):
-        if player.max_bomb_count < 6:
-            player.max_bomb_count += 1
+        if player.bomb_count <= MAX_PLAYER_BOMB_COUNT:
+            player.bomb_count += 1
 
         self.kill()
 
@@ -50,7 +47,7 @@ class ForceBonus(Bonus, ABC):
         self.image = ForceBonusSprite().image
 
     def use_bonus(self, player):
-        if player.force < 6:
+        if player.force <= MAX_PLAYER_FORCE:
             player.force += 1
 
         self.kill()
@@ -62,7 +59,7 @@ class HealBonus(Bonus, ABC):
         self.image = HealBonusSprite().image
 
     def use_bonus(self, player):
-        if player.health < 6:
+        if player.health <= MAX_PLAYER_HEALTH:
             player.health += 1
 
         self.kill()

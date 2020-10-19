@@ -9,7 +9,7 @@ class Player(sprite.Sprite):
     def __init__(self, level, sprites, setup, position):
         sprite.Sprite.__init__(self)
         self.rect = Rect(position, (PLAYER_WIDTH, PLAYER_HEIGHT))
-        self.max_bomb_count = PLAYER_BOMB_COUNT
+        self.bomb_count = PLAYER_BOMB_COUNT
         self.speed = PLAYER_SPEED
         self.force = PLAYER_FORCE
         self.health = PLAYER_HP
@@ -58,7 +58,7 @@ class Player(sprite.Sprite):
                 flag = False
 
         bomb_count = len(self.bombs_dropped)
-        if self.max_bomb_count > bomb_count and flag:
+        if self.bomb_count > bomb_count and flag:
             bomb = Bomb(self.force, self.level, position)
             self.bombs_dropped.append(bomb)
 
@@ -119,5 +119,7 @@ class Player(sprite.Sprite):
                     break
         else:
             self.was_last_move("die")
-            # self.image = self.sprites.death_play[self.frame_num(WALK_FRAMES)]
-            self.kill()
+            if self.anim_count < FPS // 1.5:
+                self.image = self.sprites.death_play[self.frame_num(DEATH_FRAMES)]
+            elif self.anim_count > FPS * 5:
+                self.kill()

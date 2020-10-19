@@ -120,13 +120,19 @@ def draw_volume_line(screen, clock, events):
 class MenuTime(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
-        self.image = image.load(menu_sprites_dir + "menu.png")
+        self.image = transform.scale(image.load(menu_sprites_dir + "menu.png"), (WIN_WIDTH, WIN_HEIGHT))
         self.rect = self.image.get_rect()
         self.play = Play()
         self.settings = Settings()
         self.exit = Exit()
         self.mainImage1 = MainImage1()
         self.mainImage2 = MainImage2()
+
+
+class MenuGameOver(sprite.Sprite):
+    def __init__(self):
+        sprite.Sprite.__init__(self)
+        self.image = transform.scale(image.load(menu_sprites_dir + "menu.png"), (WIN_WIDTH, WIN_HEIGHT))
 
 
 def menu_update():
@@ -165,7 +171,7 @@ def menu_draw(screen, clock):
 class SettingsTime(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
-        self.image = image.load(menu_sprites_dir + "menu.png")
+        self.image = transform.scale(image.load(menu_sprites_dir + "menu.png"), (WIN_WIDTH, WIN_HEIGHT))
         self.rect = self.image.get_rect()
         self.back = Back()
         self.mainImage1 = MainImage1()
@@ -207,7 +213,7 @@ def settings_draw(screen, clock):
 class LevelMenuTime(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
-        self.image = image.load(menu_sprites_dir + "menu.png")
+        self.image = transform.scale(image.load(menu_sprites_dir + "menu.png"), (WIN_WIDTH, WIN_HEIGHT))
         self.rect = self.image.get_rect()
         self.level1 = Level1()
         self.level2 = Level2()

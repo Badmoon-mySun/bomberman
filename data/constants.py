@@ -28,7 +28,7 @@ PL_MASK_HEIGHT = 15
 
 # Количество блоков в ширину и в длину
 WIDTH_BLOCKS_COUNT = 15
-HEIGHT_BLOCS_COUNT = 13
+HEIGHT_BLOCS_COUNT = 14
 
 # Высчитываем размеры экрана в зависимости от количества и размера блоков
 SCREEN_SIZE = (WIN_WIDTH, WIN_HEIGHT) = (WIDTH_BLOCKS_COUNT * BLOCK_SIZE, HEIGHT_BLOCS_COUNT * BLOCK_SIZE)
@@ -45,6 +45,12 @@ PLAYER_SPEED = 2
 PLAYER_HP = 2
 PLAYER_BOMB_COUNT = 2
 PLAYER_FORCE = 2
+
+MAX_PLAYER_SPEED = 4
+MAX_PLAYER_HEALTH = 5
+MAX_PLAYER_BOMB_COUNT = 5
+MAX_PLAYER_FORCE = 5
+
 
 # Раскладка первого игрока
 P1_UP = K_UP
