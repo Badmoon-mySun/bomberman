@@ -44,6 +44,7 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
         self.bomb_explosion(self)
 
     def bomb_explosion(self, bomb):
+        players_damaged = []
         def add_explosion(block):
             flag = True
             for en in self.level.entities:
@@ -55,7 +56,8 @@ class Bomb(sprite.Sprite, Obstacle, AnimatedBlock, ABC):
                         return False
 
             for pl in self.level.players:
-                if Rect.colliderect(block.rect, pl.player_mask):
+                if not pl in players_damaged and Rect.colliderect(block.rect, pl.player_mask):
+                    players_damaged.append(pl)
                     pl.damage()
 
             self.level.entities.add(block)
